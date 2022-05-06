@@ -6,11 +6,23 @@ import json
 
 
 def users(args):
-    _make_call('users')
+    _make_call_and_print('users')
 
 
 def tweet(args):
-    _make_call('tweet', params={'status':args.status})
+    _make_call_and_print('tweet', params={'status':args.status})
+
+
+def register(args):
+    response = _make_call('register')
+    token = response['result']['oauth_token']
+    print(f'Go to https://api.twitter.com/oauth/authorize?oauth_token={token}, follow the prompts and login, then enter the resultant PIN below')
+    pin = input('>> ')
+    _make_call_and_print('register_complete', params={'oauth_token': token, 'pin': pin})
+
+
+def _make_call_and_print(method, params=None):
+  print(_make_call(method, params)['result'])
 
 
 def _make_call(method, params=None):
@@ -26,7 +38,8 @@ def _make_call(method, params=None):
         f'http://localhost:{args.port}/jsonrpc',
         data=json.dumps(payload),
         headers={'content-type': 'application/json'}).json()
-    print(response['result'])
+    return response
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -41,6 +54,9 @@ if __name__ == '__main__':
     tweet_parser.add_argument('--status', required=True)
     tweet_parser.add_argument('--user')
     tweet_parser.set_defaults(func=tweet)
+
+    register_parser = subparsers.add_parser('register')
+    register_parser.set_defaults(func=register)
 
     args = parser.parse_args()
     if 'func' not in args.__dict__:
