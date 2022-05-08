@@ -10,7 +10,7 @@ def users(args):
 
 
 def tweet(args):
-    _make_call_and_print('tweet', params={'status':args.status})
+    _make_call_and_print('tweet', params={'status':args.status,'user':args.user})
 
 
 def register(args):

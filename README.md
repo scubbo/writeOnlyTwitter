@@ -9,4 +9,4 @@
 
 ## To tweet
 
-`./client.py tweet --status "<text>"
+`./client.py tweet --status "<text>"`. Newlines can be inserted with `\n`, octothorpes for hashtags work fine.
