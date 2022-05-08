@@ -1,0 +1,4 @@
+python-twitter
+json-rpc
+Werkzeug
+requests-oauthlib
