@@ -66,7 +66,11 @@ def tweet(**kwargs):
 def _send_tweet(apps, username, status):
     status = apps[username].PostUpdate(status=status)
     print(status)
-    return {'id': status.id, 'user': status.user.screen_name, 'status': status.text}
+    return {
+        'id': status.id,
+        'user': status.user.screen_name,
+        'status': status.text,
+        'url': f'https://twitter.com/{status.user.screen_name}/status/{status.id}'}
 
 
 @dispatcher.add_method
@@ -120,4 +124,4 @@ if __name__ == '__main__':
     # Yes, this is a no-op parser right now - but it could be useful in the future!
     # (E.g. if we want to provide a callback_url)
     parser = argparse.ArgumentParser()
-    run_simple('localhost', 4000, application_builder(parser.parse_args()))
+    run_simple('0.0.0.0', 4000, application_builder(parser.parse_args()))
